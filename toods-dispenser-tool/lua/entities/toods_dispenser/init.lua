@@ -11,7 +11,7 @@ TTTTTT  T:::::T  TTTTTT   ooooooooooo      ooooooooooo       ddddddddd:::::d
       T:::::::::T       oo:::::::::::oo  oo:::::::::::oo   d:::::::::ddd::::d
       TTTTTTTTTTT         ooooooooooo      ooooooooooo      ddddddddd   ddddd
 
-Version: 1.0
+Version: 2.0
 Contact: Discord - The Toodster#0001 || Steam - https://steamcommunity.com/id/freelancertood/
 
 Disclaimer: If you mess with anything inside this file and you break it then it's on you. Do not come to me for support. 
@@ -32,32 +32,37 @@ local NPCAmount
 local MinSpawn
 local MaxSpawn
 
+local WepDiff
+
 function ENT:KeyValue( TKey, TValue )
-    if TKey == "ModelNPC" then
-        SwapNPCModel = tostring( TValue )
+    if TKey == "NPCModel" then
+        SwapNPCModel = tostring( TValue ) -- Why is this being retarded and forcing me to use tostring()?
     end
-    if TKey == "ModelPod" then
+    if TKey == "DispenserModel" then
         self:SetModel( TValue )
     end
-    if TKey == "WeaponNPC" then
+    if TKey == "NPCWeapon" then
         NPCWeapon = TValue
     end
-    if TKey == "HealthNPC" then
+    if TKey == "NPCHealth" then
         NPCHealth = TValue
     end
-    if TKey == "MinSpawn" then
+    if TKey == "MinSpawnTime" then
         MinSpawn = TValue
     end
-    if TKey == "MaxSpawn" then
+    if TKey == "MaxSpawnTime" then
         MaxSpawn = TValue
     end
-    if TKey == "HealthPod" then
+    if TKey == "DispenserHealth" then
         self:SetHealth( TValue )
 		self:SetMaxHealth( TValue )
     end
-    if TKey == "AmountNPC" then
+    if TKey == "NPCAmount" then
         NPCAmount = TValue
     end
+	if TKey == "NPCWepDiff" then
+		WepDiff = TValue
+	end
 end
 
 function ENT:Initialize()
@@ -148,6 +153,7 @@ function ENT:PhysicsCollide( data, phys )
                         SpawnNpc:Give( NPCWeapon )
                         SpawnNpc:SetMoveType( MOVETYPE_STEP )
                         SpawnNpc:SetBloodColor( DONT_BLEED )
+						SpawnNpc:SetCurrentWeaponProficiency( WepDiff )
                         SpawnNpc:Spawn()
                         SpawnNpc:DropToFloor()
                     end
